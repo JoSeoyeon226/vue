@@ -1,5 +1,6 @@
 <template>
   <div class="root">
+    <mjc-header></mjc-header>
     <table>
       <thead>
         <tr>
@@ -39,7 +40,12 @@
 
 <script>
 import moment from "moment";
+import MjcHeader from "@/components/MjcHeader";
+
 export default {
+  components:{
+    MjcHeader
+  },
   data() {
     return {
       page: 1,
