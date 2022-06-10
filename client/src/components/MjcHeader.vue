@@ -1,11 +1,16 @@
 <template>
-  <dir class="header">
+  <div class="header">
       <v-layout>
-          <div class= "logo" @click="moveMain"> MJC 게시판 </div>
+          <div class= "logo" @click="moveMain"> MJC Board </div>
           <v-spacer></v-spacer>
-          <div>조서연</div>
+          <!-- <div>조서연</div>-->
+            <v-btn text v-if="$store.state.user" @click="logout">로그아웃</v-btn>
+            <v-btn text v-if="!$store.state.user" @click="$router.push('/')">로그인</v-btn>
+          <div v-if="$store.state.user">
+            {{$store.state.user.name}} 
+          </div> 
       </v-layout>
-  </dir>
+  </div>
 </template>
 
 <script>
@@ -13,7 +18,23 @@ export default {
     methods:{
         moveMain(){
             this.$router.push("/board");
-        }
+        },
+        logout(){
+            this.axios.post("/api/users/logout").then((result) => {
+                if(result.data.result=="ok"){
+                    this.$store.commit("logout");
+                }
+            });
+            
+        },
+    },
+    mounted(){
+        this.axios.post("/api/users/info").then(result=>{
+            if(result.data.result =="ok"){
+                this.$store.commit("setUser", result.data.user);
+            }
+            
+        });
     }
 
 };

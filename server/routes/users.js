@@ -31,9 +31,10 @@ router.post("/join", async function (req, res) {
 router.post("/login", async function (req, res) {
   console.log(req.body)
   var user = await User.findOne({
+    arrtibutes: ["id", "name"],
     where: {
       id: req.body.id,
-      password: req.body.password
+      password: req.body.password //id랑 pw가 일치한 사람만 ~~
     }
   })
   if (user == null) {
@@ -45,9 +46,33 @@ router.post("/login", async function (req, res) {
   }
   req.session.user = user
   res.json({
-    result: "ok"
+    result: "ok",
+    user: user //사용자 정보도 받을 수 있게 추가함
   })
 
+})
+
+router.post('/info', async (req, res) => {
+
+  if (req.session.user) {
+    res.json({
+      result: "ok",
+      user: req.session.user
+    })
+  } //로그인이 되지 않았을 때
+  else {
+    res.json({
+      result: "fail"
+    })
+  }
+
+})
+
+router.post("/logout", async (req, res) => {
+  req.session.destroy()
+  res.json({
+    result: "ok"
+  })
 })
 
 module.exports = router;

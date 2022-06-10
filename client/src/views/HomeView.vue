@@ -7,7 +7,7 @@
       <!--<v-btn class="mr-3" @click="login">로그인</v-btn>-->
       <mjc-btn 
         label="로그인" 
-        :background="loginBtnBg" 
+        :background="loginbtnBg" 
         fontcolor="white"
         @click="login"
         @changeBackground="loginBtnBackground"> 
@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     loginBtnBackground(background){
-      this.loginBtnBg=background
+      this.loginbtnBg=background
     },
     login(background){
     console.log(background) 
@@ -63,8 +63,10 @@ export default {
       }
       //TODO : 서버에 접속해서 로그인 시키기
       this.axios.post("/api/users/login", this.form).then((result) => {
-        if (result.data.result == "ok") {
-          this.$router.push("/board");
+        if (result.data.result == "ok") { //로그인이 성공했을 때
+          console.log(result.data.user);
+          this.$store.commit("setUser", result.data.user); //
+          this.$router.push("/board"); //$가 붙은것은 뷰 안에 있는 내장 객체
         }
         if (result.data.result == "fail") {
           window.alert(result.data.message);

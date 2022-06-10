@@ -30,7 +30,6 @@ export default {
 <style scoped>
 .mjc-btn{
     padding: 5px 10px;
-   
     border-radius: 10px;
     font-size: 16px;
     text-align: center;

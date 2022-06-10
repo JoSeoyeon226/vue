@@ -18,7 +18,8 @@ var sessionStore = new MysqlStore(options)
 const { Sequelize } = require('sequelize');
 global.sequelize = new Sequelize('board', 'root', 'root', {
   host: 'localhost',
-  dialect: "mysql"
+  dialect: "mysql",
+  logging: false //logs를 정리해줌
 });
 
 require("./model.js")
@@ -41,11 +42,15 @@ app.use(session({
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+console.log(path.join(__dirname, "test")) //내 디렉토리가 어디에 있는지, "찾고 싶은 디렉토리 명 넣으면 더 상세하게 알려줌"
+console.log(__filename) //내 파일이 어디있는지 log로 보여줌
+
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../client/dist')));
 
 app.use('/', indexRouter);
 app.use('/api/users', usersRouter);

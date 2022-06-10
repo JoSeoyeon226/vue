@@ -1,7 +1,7 @@
 <template>
   <div class="root">
     <mjc-header></mjc-header>
-    <table>
+    <div class="table-container"> <table>
       <thead>
         <tr>
           <th width="80px">글번호</th>
@@ -12,7 +12,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="board in boardList" :key="board.id">
+        <tr v-for="board in boardList" :key="board.id" @click="clickBoardItem(board)"> 
           <td class="text-center">{{ board.id }}</td>
           <td>{{ board.title }}</td>
           <td class="text-center">
@@ -25,7 +25,8 @@
           <td class="text-center">{{ board.writeTime | dateFormat }}</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
+    
     <v-pagination 
       v-model="page" 
       @input="changePage" 
@@ -44,7 +45,7 @@ import MjcHeader from "@/components/MjcHeader";
 
 export default {
   components:{
-    MjcHeader
+    MjcHeader:MjcHeader
   },
   data() {
     return {
@@ -75,6 +76,10 @@ export default {
     });
   },
   methods: {
+    clickBoardItem(board){
+      alert("버튼이 눌리나용?")
+      this.$router.push("/board/item/"+board.id);
+    },
     changePage(page) {
       console.log(page);
       this.axios.post("/api/board/list", { page: page }).then((result) => {
